@@ -285,13 +285,6 @@ if predict_clicked:
     </div>
     """, unsafe_allow_html=True)
 
-    with st.expander("What features mattered most (model-level, not per-patient)"):
-        importance = pd.DataFrame({
-            "Feature": feature_names,
-            "Importance": model.feature_importances_
-        }).sort_values("Importance", ascending=False)
-        st.bar_chart(importance.set_index("Feature"), color="#0F6B5C")
-
 st.markdown(
     '<div class="hf-caption">For educational purposes only — not a substitute for '
     'professional medical advice or diagnosis.</div>',
