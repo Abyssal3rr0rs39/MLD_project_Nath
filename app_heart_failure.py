@@ -189,11 +189,10 @@ model, feature_names = load_model()
 # ---------------------------------------------------------
 # Header
 # ---------------------------------------------------------
-st.markdown('<div class="eyebrow">Clinical decision support · Random Forest</div>', unsafe_allow_html=True)
+st.markdown('<div class="eyebrow">Clinical decision support</div>', unsafe_allow_html=True)
 st.markdown('<div class="hf-title">Heart Failure Survival Predictor</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="hf-subtitle">Estimates risk of death from heart failure using a '
-    'Random Forest model tuned with RandomizedSearchCV on clinical records.</div>',
+    '<div class="hf-subtitle">Estimates risk of death from heart failure.</div>',
     unsafe_allow_html=True
 )
 
