@@ -17,127 +17,159 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-html, body, [class*="css"]  {
+html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
 .stApp {
-    background-color: #F1F4F3;
-}
-
-/* Eyebrow label */
-.eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #0F6B5C;
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-}
-
-/* Header title */
-.hf-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 2.1rem;
+    background: radial-gradient(circle at top, rgba(15, 107, 92, 0.15), transparent 35%),
+                linear-gradient(180deg, #E7F4F1 0%, #F9FBFB 100%);
     color: #12262B;
-    line-height: 1.15;
-    margin-bottom: 0.35rem;
+    padding: 1.2rem 0 2rem;
 }
 
-.hf-subtitle {
-    color: #55686C;
-    font-size: 0.98rem;
-    max-width: 46ch;
+.page-shell {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 26px;
+    border: 1px solid rgba(15, 107, 92, 0.12);
+    box-shadow: 0 24px 48px rgba(11, 34, 36, 0.08);
+    padding: 1.8rem;
+    margin-bottom: 1.6rem;
+}
+
+.hero-card {
+    background: linear-gradient(135deg, #0F6B5C, #145E74);
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.hero-card .eyebrow,
+.hero-card .hf-title,
+.hero-card .hf-subtitle {
+    color: #ffffff;
+}
+
+.hero-card .hf-title {
+    font-size: 2.6rem;
+    letter-spacing: -0.03em;
+}
+
+.hero-card .hf-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 56ch;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     margin-bottom: 1.1rem;
 }
 
-/* Section eyebrow used above each chart card */
+.hero-chip {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #E7F4F1;
+}
+
 .section-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #55686C;
-    font-weight: 600;
-    margin: 1.4rem 0 0.4rem 0;
-    border-bottom: 1px solid #D4DBD9;
-    padding-bottom: 0.35rem;
-}
-
-/* ECG hero strip */
-.ecg-wrap {
-    width: 100%;
-    height: 54px;
-    margin: 0.2rem 0 1.3rem 0;
-    overflow: hidden;
-}
-.ecg-path {
-    stroke: #0F6B5C;
-    stroke-width: 2;
-    fill: none;
-    stroke-dasharray: 900;
-    stroke-dashoffset: 900;
-    animation: draw 3.6s linear infinite;
-}
-@keyframes draw {
-    0%   { stroke-dashoffset: 900; }
-    100% { stroke-dashoffset: 0; }
-}
-
-/* Buttons */
-.stButton > button {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    border-radius: 8px;
-    height: 2.9rem;
-}
-
-/* Monitor result panel */
-.monitor-panel {
-    background: #08201C;
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    margin-top: 0.6rem;
-    margin-bottom: 0.8rem;
-}
-.monitor-eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #6FBFA8;
-    margin-bottom: 0.5rem;
+    color: #55686C;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
+
+.input-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.monitor-panel {
+    background: linear-gradient(180deg, rgba(13, 47, 47, 0.98), rgba(7, 22, 23, 0.96));
+    border-radius: 22px;
+    padding: 1.8rem 2rem;
+    margin-top: 0.8rem;
+}
+
+.monitor-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7EE0B5;
+    margin-bottom: 0.65rem;
+}
+
 .monitor-readout {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 2.6rem;
-    font-weight: 600;
+    font-size: 3rem;
+    font-weight: 700;
     line-height: 1;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.2rem;
 }
+
 .monitor-verdict {
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    margin-top: 0.3rem;
+    font-size: 1rem;
+    margin-top: 0.4rem;
+    color: rgba(255, 255, 255, 0.88);
 }
+
 .pulse-icon {
     display: inline-block;
     animation: beat 1.6s ease-in-out infinite;
     margin-right: 0.5rem;
 }
+
 @keyframes beat {
     0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.18); }
+    15% { transform: scale(1.16); }
     30% { transform: scale(1); }
 }
 
+.stButton > button {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 12px;
+    height: 3.1rem;
+    background-color: #0F6B5C;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 16px 30px rgba(15, 107, 92, 0.18);
+}
+
+.stButton > button:hover {
+    background-color: #14816f;
+}
+
+.info-card {
+    background: #F8FBFB;
+    border: 1px solid rgba(8, 32, 28, 0.08);
+}
+
 .hf-caption {
-    color: #7C8B8E;
-    font-size: 0.82rem;
+    color: #55686C;
+    font-size: 0.85rem;
     margin-top: 0.6rem;
+}
+
+@media (max-width: 768px) {
+    .hero-card .hf-title {
+        font-size: 2rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -164,7 +196,13 @@ model, feature_names = load_model()
 # ---------------------------------------------------------
 # Header
 # ---------------------------------------------------------
-st.markdown('<div class="eyebrow">Clinical decision support · Random Forest</div>', unsafe_allow_html=True)
+st.markdown('<div class="page-shell">', unsafe_allow_html=True)
+st.markdown('<div class="card hero-card">', unsafe_allow_html=True)
+st.markdown(
+    '<div class="hero-tag"><span class="hero-chip">Clinical decision support</span></div>' +
+    '<div class="eyebrow">Random Forest prediction for heart failure</div>',
+    unsafe_allow_html=True
+)
 st.markdown('<div class="hf-title">Heart Failure Survival Predictor</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="hf-subtitle">Estimates risk of death from heart failure using a '
@@ -172,7 +210,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Animated ECG strip (signature element)
 st.markdown("""
 <div class="ecg-wrap">
 <svg viewBox="0 0 900 54" width="100%" height="54" preserveAspectRatio="none">
@@ -182,19 +219,21 @@ st.markdown("""
 </svg>
 </div>
 """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 if model is None:
     st.error(
         "Model file not found. Place **heart_failure_rf_model_randomsearch.pkl** "
-        "in the same folder as app.py, then refresh."
+        "in the same folder as this app script, then refresh."
     )
     st.stop()
 
 # ---------------------------------------------------------
 # Input form
 # ---------------------------------------------------------
+st.markdown('<div class="card info-card">', unsafe_allow_html=True)
 st.markdown('<div class="section-label">Vitals</div>', unsafe_allow_html=True)
-with st.container(border=True):
+with st.container():
     col1, col2 = st.columns(2)
     with col1:
         age = st.slider("Age", min_value=18, max_value=100, value=60)
@@ -205,8 +244,7 @@ with st.container(border=True):
         creatinine_phosphokinase = st.number_input("Creatinine phosphokinase (mcg/L)", min_value=0, max_value=8000, value=250)
         platelets = st.number_input("Platelets (kiloplatelets/mL)", min_value=25000.0, max_value=900000.0, value=263000.0, step=1000.0, format="%.0f")
 
-st.markdown('<div class="section-label">History &amp; monitoring</div>', unsafe_allow_html=True)
-with st.container(border=True):
+    st.markdown('<div class="section-label">History &amp; monitoring</div>', unsafe_allow_html=True)
     col3, col4 = st.columns(2)
     with col3:
         anaemia = st.radio("Anaemia", ["No", "Yes"], horizontal=True)
@@ -216,6 +254,8 @@ with st.container(border=True):
         sex = st.radio("Sex", ["Female", "Male"], horizontal=True)
         smoking = st.radio("Smoking", ["No", "Yes"], horizontal=True)
         time = st.slider("Follow-up period (days)", min_value=0, max_value=300, value=115)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.write("")
 predict_clicked = st.button("Run prediction", type="primary", use_container_width=True)
@@ -250,13 +290,14 @@ if predict_clicked:
         accent = "#43F2A3"
         verdict = "Lower risk of a death event"
 
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown(f"""
     <div class="monitor-panel">
         <div class="monitor-eyebrow">Model output</div>
         <div class="monitor-readout" style="color:{accent};">
             <span class="pulse-icon">♥</span>{probability:.1%}
         </div>
-        <div class="monitor-verdict" style="color:#E7F3EF;">{verdict}</div>
+        <div class="monitor-verdict">{verdict}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -266,9 +307,11 @@ if predict_clicked:
             "Importance": model.feature_importances_
         }).sort_values("Importance", ascending=False)
         st.bar_chart(importance.set_index("Feature"), color="#0F6B5C")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown(
     '<div class="hf-caption">For educational purposes only — not a substitute for '
     'professional medical advice or diagnosis.</div>',
     unsafe_allow_html=True
 )
+st.markdown('</div>', unsafe_allow_html=True)
