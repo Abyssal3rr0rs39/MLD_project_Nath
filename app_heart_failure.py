@@ -47,8 +47,9 @@ html, body, [class*="css"]  {
 }
 
 .hf-subtitle {
-    color: #55686C;
-    font-size: 0.98rem;
+    color: #2E4044;
+    font-size: 1rem;
+    font-weight: 500;
     max-width: 46ch;
     margin-bottom: 1.1rem;
 }
@@ -56,14 +57,35 @@ html, body, [class*="css"]  {
 /* Section eyebrow used above each chart card */
 .section-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.74rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #55686C;
-    font-weight: 600;
+    color: #12262B;
+    font-weight: 700;
     margin: 1.4rem 0 0.4rem 0;
-    border-bottom: 1px solid #D4DBD9;
+    border-bottom: 1.5px solid #A9BAB7;
     padding-bottom: 0.35rem;
+}
+
+/* Streamlit widget labels (slider/radio/number input captions) */
+[data-testid="stWidgetLabel"] p {
+    color: #12262B !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+/* Radio option text */
+[data-testid="stRadio"] label p {
+    color: #12262B !important;
+    font-weight: 500 !important;
+}
+
+/* Slider / number input current value text */
+[data-testid="stSliderTickBarMin"],
+[data-testid="stSliderTickBarMax"],
+[data-testid="stThumbValue"] {
+    color: #12262B !important;
+    font-weight: 600 !important;
 }
 
 /* ECG hero strip */
@@ -105,10 +127,11 @@ html, body, [class*="css"]  {
 }
 .monitor-eyebrow {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #6FBFA8;
+    color: #A6E9D2;
+    font-weight: 600;
     margin-bottom: 0.5rem;
 }
 .monitor-readout {
@@ -120,7 +143,8 @@ html, body, [class*="css"]  {
 }
 .monitor-verdict {
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 600;
     margin-top: 0.3rem;
 }
 .pulse-icon {
@@ -135,8 +159,9 @@ html, body, [class*="css"]  {
 }
 
 .hf-caption {
-    color: #7C8B8E;
-    font-size: 0.82rem;
+    color: #45575B;
+    font-size: 0.85rem;
+    font-weight: 500;
     margin-top: 0.6rem;
 }
 </style>
