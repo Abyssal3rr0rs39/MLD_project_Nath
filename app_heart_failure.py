@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+import math
 
 st.set_page_config(
     page_title="Heart Failure Survival Predictor",
@@ -15,90 +16,172 @@ st.set_page_config(
 # ---------------------------------------------------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ---------- Design tokens ---------- */
+:root {
+    --canvas: #EEF2EF;
+    --surface: #FFFFFF;
+    --ink: #12262B;
+    --ink-muted: #4B5D5A;
+    --ink-soft: #6B7C79;
+    --line: #DAE3DF;
+    --teal: #0F6B5C;
+    --teal-deep: #08201C;
+    --teal-tint: #E6F1EC;
+    --good: #1E9E74;
+    --amber: #D9A441;
+    --alert: #C2452B;
+    --shadow-sm: 0 1px 2px rgba(18, 38, 43, 0.05), 0 1px 1px rgba(18, 38, 43, 0.04);
+    --shadow-md: 0 8px 24px rgba(18, 38, 43, 0.08), 0 2px 6px rgba(18, 38, 43, 0.05);
+}
 
 html, body, [class*="css"]  {
     font-family: 'Inter', sans-serif;
 }
 
 .stApp {
-    background-color: #F1F4F3;
+    background:
+        radial-gradient(1200px 480px at 50% -10%, rgba(15, 107, 92, 0.10), rgba(15, 107, 92, 0) 60%),
+        var(--canvas);
 }
 
-/* Eyebrow label */
+.block-container {
+    padding-top: 2.6rem;
+    padding-bottom: 3rem;
+    max-width: 760px;
+}
+
+/* ---------- Header ---------- */
 .eyebrow {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #0F6B5C;
+    color: var(--teal);
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal-tint);
 }
 
-/* Header title */
 .hf-title {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 2.1rem;
-    color: #12262B;
-    line-height: 1.15;
-    margin-bottom: 0.35rem;
+    font-size: 2.35rem;
+    color: var(--ink);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
 }
 
 .hf-subtitle {
-    color: #2E4044;
-    font-size: 1rem;
+    color: var(--ink-muted);
+    font-size: 1.03rem;
     font-weight: 500;
-    max-width: 46ch;
-    margin-bottom: 1.1rem;
+    line-height: 1.5;
+    max-width: 48ch;
+    margin-bottom: 1.4rem;
 }
 
-/* Section eyebrow used above each chart card */
+/* Section label above each card */
 .section-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #12262B;
+    color: var(--ink);
     font-weight: 700;
-    margin: 1.4rem 0 0.4rem 0;
-    border-bottom: 1.5px solid #A9BAB7;
-    padding-bottom: 0.35rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 1.8rem 0 0.6rem 0;
+}
+.section-label .tag {
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-size: 0.76rem;
 }
 
-/* Streamlit widget labels (slider/radio/number input captions) */
+/* ---------- Form cards (st.container(border=True)) ---------- */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--shadow-sm);
+}
+[data-testid="stVerticalBlockBorderWrapper"] > div {
+    border-radius: 16px !important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock"] {
+    gap: 0.35rem;
+}
+
+/* Streamlit widget labels */
 [data-testid="stWidgetLabel"] p {
-    color: #12262B !important;
+    color: var(--ink) !important;
     font-weight: 600 !important;
-    font-size: 0.95rem !important;
+    font-size: 0.93rem !important;
+}
+[data-testid="stWidgetLabel"] {
+    margin-bottom: 0.1rem;
 }
 
 /* Radio option text */
 [data-testid="stRadio"] label p {
-    color: #12262B !important;
+    color: var(--ink) !important;
     font-weight: 500 !important;
+}
+[data-testid="stRadio"] > div {
+    gap: 0.4rem;
 }
 
 /* Slider / number input current value text */
 [data-testid="stSliderTickBarMin"],
 [data-testid="stSliderTickBarMax"],
 [data-testid="stThumbValue"] {
-    color: #12262B !important;
+    color: var(--ink) !important;
     font-weight: 600 !important;
 }
+[data-testid="stSlider"] [role="slider"] {
+    box-shadow: 0 0 0 5px var(--teal-tint) !important;
+}
+div[data-baseweb="input"] {
+    border-radius: 8px !important;
+}
 
-/* ECG hero strip */
+/* Tooltip icon next to labels */
+[data-testid="stTooltipIcon"] svg {
+    color: var(--teal) !important;
+}
+
+/* ---------- ECG hero strip ---------- */
 .ecg-wrap {
     width: 100%;
-    height: 54px;
-    margin: 0.2rem 0 1.3rem 0;
+    height: 58px;
+    margin: 0.1rem 0 1.6rem 0;
     overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.9rem;
 }
 .ecg-path {
-    stroke: #0F6B5C;
-    stroke-width: 2;
+    stroke: var(--teal);
+    stroke-width: 2.25;
     fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
     stroke-dasharray: 900;
     stroke-dashoffset: 900;
     animation: draw 3.6s linear infinite;
@@ -108,62 +191,90 @@ html, body, [class*="css"]  {
     100% { stroke-dashoffset: 0; }
 }
 
-/* Buttons */
+/* ---------- Buttons ---------- */
 .stButton > button {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
+    font-size: 1rem;
     letter-spacing: 0.01em;
-    border-radius: 8px;
-    height: 2.9rem;
+    border-radius: 10px;
+    height: 3rem;
+    background: var(--teal) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--teal) !important;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.stButton > button:hover {
+    background: #0C5648 !important;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.stButton > button:active {
+    transform: translateY(0);
 }
 
-/* Monitor result panel */
+/* ---------- Monitor result panel ---------- */
 .monitor-panel {
-    background: #08201C;
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    margin-top: 0.6rem;
-    margin-bottom: 0.8rem;
+    background:
+        radial-gradient(420px 220px at 85% -10%, rgba(166, 233, 210, 0.10), rgba(166, 233, 210, 0) 60%),
+        var(--teal-deep);
+    border-radius: 18px;
+    padding: 1.9rem 2rem 1.7rem 2rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.9rem;
+    box-shadow: var(--shadow-md);
 }
 .monitor-eyebrow {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #A6E9D2;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
 }
-.monitor-readout {
+.gauge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.gauge-readout {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 2.6rem;
+    font-size: 2.5rem;
     font-weight: 600;
     line-height: 1;
-    margin-bottom: 0.15rem;
+    margin-top: -0.6rem;
+}
+.gauge-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: #9FBBB4;
+    font-weight: 500;
+    margin-top: 0.2rem;
+    letter-spacing: 0.02em;
 }
 .monitor-verdict {
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
+    margin-top: 0.9rem;
+    text-align: center;
+}
+.monitor-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    color: #8FA8A2;
+    font-weight: 500;
+    text-align: center;
     margin-top: 0.3rem;
-}
-.monitor-bar-track {
-    width: 100%;
-    height: 8px;
-    background: rgba(230, 243, 239, 0.15);
-    border-radius: 999px;
-    overflow: hidden;
-    margin: 0.55rem 0 0.7rem 0;
-}
-.monitor-bar-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.4s ease;
+    max-width: 40ch;
 }
 .pulse-icon {
     display: inline-block;
     animation: beat 1.6s ease-in-out infinite;
-    margin-right: 0.5rem;
+    margin-right: 0.45rem;
 }
 @keyframes beat {
     0%, 100% { transform: scale(1); }
@@ -172,65 +283,91 @@ html, body, [class*="css"]  {
 }
 
 .hf-caption {
-    color: #45575B;
-    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-size: 0.84rem;
     font-weight: 500;
-    margin-top: 0.6rem;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
 }
 
-/* Glossary expander */
+/* ---------- Glossary expander ---------- */
 [data-testid="stExpander"] {
-    border: 1px solid #A9BAB7 !important;
-    border-radius: 10px !important;
-    background-color: #FFFFFF !important;
-    margin-bottom: 1.1rem;
+    border: 1px solid var(--line) !important;
+    border-radius: 14px !important;
+    background-color: var(--surface) !important;
+    margin-bottom: 1.3rem;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
 }
 [data-testid="stExpander"] summary {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
-    color: #12262B !important;
+    font-size: 0.98rem;
+    color: var(--ink) !important;
+    padding: 0.2rem 0;
+}
+[data-testid="stExpander"] summary:hover {
+    color: var(--teal) !important;
 }
 
 /* Glossary grid */
 .glossary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 0.7rem;
-    margin-top: 0.3rem;
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    gap: 0.65rem;
+    margin-top: 0.4rem;
 }
 .glossary-card {
-    background: #F1F4F3;
-    border: 1px solid #D3DCDA;
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--teal);
     border-radius: 10px;
-    padding: 0.75rem 0.9rem;
+    padding: 0.7rem 0.85rem;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.glossary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
 }
 .glossary-term {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #0F6B5C;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.86rem;
+    color: var(--ink);
     font-weight: 700;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
 }
 .glossary-unit {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
-    color: #5B6E6A;
-    font-weight: 500;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.3rem;
 }
 .glossary-def {
-    color: #2E4044;
-    font-size: 0.86rem;
-    font-weight: 500;
-    line-height: 1.35;
+    color: var(--ink-muted);
+    font-size: 0.83rem;
+    font-weight: 450;
+    line-height: 1.4;
 }
 .glossary-target {
-    margin-top: 0.9rem;
-    padding: 0.75rem 0.9rem;
-    background: #EAF3F0;
-    border: 1px dashed #0F6B5C;
+    margin-top: 0.85rem;
+    padding: 0.85rem 1rem;
+    background: var(--teal-tint);
+    border: 1px solid var(--teal);
+    border-left: 3px solid var(--teal);
     border-radius: 10px;
+}
+.glossary-target .glossary-term { color: var(--teal); }
+
+/* Mobile tightening */
+@media (max-width: 640px) {
+    .hf-title { font-size: 1.85rem; }
+    .block-container { padding-left: 1rem; padding-right: 1rem; }
+    .glossary-grid { grid-template-columns: 1fr; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -332,7 +469,10 @@ with st.expander("📖  What do these fields mean?", expanded=False):
 # ---------------------------------------------------------
 # Input form
 # ---------------------------------------------------------
-st.markdown('<div class="section-label">Vitals</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-label"><span>Vitals</span><span class="tag">6 fields</span></div>',
+    unsafe_allow_html=True
+)
 with st.container(border=True):
     col1, col2 = st.columns(2)
     with col1:
@@ -344,7 +484,10 @@ with st.container(border=True):
         creatinine_phosphokinase = st.number_input("Creatinine phosphokinase (mcg/L)", min_value=0, max_value=8000, value=250, help=glossary_help("creatinine_phosphokinase"))
         platelets = st.number_input("Platelets (kiloplatelets/mL)", min_value=25000.0, max_value=900000.0, value=263000.0, step=1000.0, format="%.0f", help=glossary_help("platelets"))
 
-st.markdown('<div class="section-label">History &amp; monitoring</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-label"><span>History &amp; monitoring</span><span class="tag">6 fields</span></div>',
+    unsafe_allow_html=True
+)
 with st.container(border=True):
     col3, col4 = st.columns(2)
     with col3:
@@ -386,19 +529,40 @@ if predict_clicked:
         accent = "#E2542D"
         verdict = "Elevated risk of a death event"
     else:
-        accent = "#43F2A3"
+        accent = "#43D9A3"
         verdict = "Lower risk of a death event"
+
+    # Needle geometry for the semicircular risk gauge
+    cx, cy, r_track, r_needle = 120, 120, 95, 76
+    theta = math.radians(180 * (1 - probability))
+    needle_x = cx + r_needle * math.cos(theta)
+    needle_y = cy - r_needle * math.sin(theta)
 
     st.markdown(f"""
     <div class="monitor-panel">
-        <div class="monitor-eyebrow">Model output · predicted probability of death event</div>
-        <div class="monitor-readout" style="color:{accent};">
-            <span class="pulse-icon">♥</span>{probability:.1%}
+        <div class="monitor-eyebrow">Model output · probability of a death event</div>
+        <div class="gauge-wrap">
+            <svg width="240" height="132" viewBox="0 0 240 140">
+                <defs>
+                    <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#1E9E74"/>
+                        <stop offset="50%" stop-color="#D9A441"/>
+                        <stop offset="100%" stop-color="#C2452B"/>
+                    </linearGradient>
+                </defs>
+                <path d="M {cx - r_track},{cy} A {r_track},{r_track} 0 0 1 {cx + r_track},{cy}"
+                      fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="18" stroke-linecap="round"/>
+                <path d="M {cx - r_track},{cy} A {r_track},{r_track} 0 0 1 {cx + r_track},{cy}"
+                      fill="none" stroke="url(#gaugeGrad)" stroke-width="13" stroke-linecap="round" opacity="0.92"/>
+                <line x1="{cx}" y1="{cy}" x2="{needle_x:.1f}" y2="{needle_y:.1f}"
+                      stroke="#F4FBF8" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="{cx}" cy="{cy}" r="7.5" fill="#F4FBF8"/>
+            </svg>
+            <div class="gauge-readout" style="color:{accent};">{probability:.1%}</div>
+            <div class="gauge-caption">predicted probability</div>
         </div>
-        <div class="monitor-bar-track">
-            <div class="monitor-bar-fill" style="width:{probability * 100:.1f}%; background:{accent};"></div>
-        </div>
-        <div class="monitor-verdict" style="color:#E7F3EF;">{verdict}</div>
+        <div class="monitor-verdict" style="color:#E7F3EF;"><span class="pulse-icon">♥</span>{verdict}</div>
+        <div class="monitor-note">Based on the {len(feature_names)} values entered above — not a diagnosis.</div>
     </div>
     """, unsafe_allow_html=True)
 
