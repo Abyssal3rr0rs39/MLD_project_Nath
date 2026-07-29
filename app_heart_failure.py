@@ -20,20 +20,20 @@ st.markdown("""
 
 /* ---------- Design tokens ---------- */
 :root {
-    --canvas: #EEF2EF;
-    --surface: #FFFFFF;
-    --ink: #12262B;
-    --ink-muted: #4B5D5A;
-    --ink-soft: #6B7C79;
-    --line: #DAE3DF;
-    --teal: #0F6B5C;
-    --teal-deep: #08201C;
-    --teal-tint: #E6F1EC;
-    --good: #1E9E74;
-    --amber: #D9A441;
-    --alert: #C2452B;
-    --shadow-sm: 0 1px 2px rgba(18, 38, 43, 0.05), 0 1px 1px rgba(18, 38, 43, 0.04);
-    --shadow-md: 0 8px 24px rgba(18, 38, 43, 0.08), 0 2px 6px rgba(18, 38, 43, 0.05);
+    --canvas: #FBF1E6;
+    --surface: #FFFDFB;
+    --ink: #3A2A20;
+    --ink-muted: #8A6F5E;
+    --ink-soft: #A88E7C;
+    --line: #EAD9C6;
+    --accent: #C85A38;
+    --accent-deep: #2E1B14;
+    --accent-tint: #F6E1CE;
+    --good: #8FA05F;
+    --amber: #E0A94B;
+    --alert: #C1453B;
+    --shadow-sm: 0 1px 2px rgba(58, 42, 32, 0.06), 0 1px 1px rgba(58, 42, 32, 0.05);
+    --shadow-md: 0 8px 24px rgba(58, 42, 32, 0.10), 0 2px 6px rgba(58, 42, 32, 0.06);
 }
 
 html, body, [class*="css"]  {
@@ -42,7 +42,7 @@ html, body, [class*="css"]  {
 
 .stApp {
     background:
-        radial-gradient(1200px 480px at 50% -10%, rgba(15, 107, 92, 0.10), rgba(15, 107, 92, 0) 60%),
+        radial-gradient(1200px 480px at 50% -10%, rgba(200, 90, 56, 0.09), rgba(200, 90, 56, 0) 60%),
         var(--canvas);
 }
 
@@ -58,7 +58,7 @@ html, body, [class*="css"]  {
     font-size: 0.72rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--teal);
+    color: var(--accent);
     font-weight: 600;
     margin-bottom: 0.5rem;
     display: flex;
@@ -71,8 +71,8 @@ html, body, [class*="css"]  {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--teal);
-    box-shadow: 0 0 0 3px var(--teal-tint);
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
 }
 
 .hf-title {
@@ -156,7 +156,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock
     font-weight: 600 !important;
 }
 [data-testid="stSlider"] [role="slider"] {
-    box-shadow: 0 0 0 5px var(--teal-tint) !important;
+    box-shadow: 0 0 0 5px var(--accent-tint) !important;
 }
 div[data-baseweb="input"] {
     border-radius: 8px !important;
@@ -164,7 +164,7 @@ div[data-baseweb="input"] {
 
 /* Tooltip icon next to labels */
 [data-testid="stTooltipIcon"] svg {
-    color: var(--teal) !important;
+    color: var(--accent) !important;
 }
 
 /* ---------- ECG hero strip ---------- */
@@ -177,7 +177,7 @@ div[data-baseweb="input"] {
     padding-bottom: 0.9rem;
 }
 .ecg-path {
-    stroke: var(--teal);
+    stroke: var(--accent);
     stroke-width: 2.25;
     fill: none;
     stroke-linecap: round;
@@ -199,9 +199,9 @@ div[data-baseweb="input"] {
     letter-spacing: 0.01em;
     border-radius: 10px;
     height: 3rem;
-    background: var(--teal) !important;
+    background: var(--accent) !important;
     color: #FFFFFF !important;
-    border: 1px solid var(--teal) !important;
+    border: 1px solid var(--accent) !important;
     box-shadow: var(--shadow-sm);
     transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
@@ -217,8 +217,8 @@ div[data-baseweb="input"] {
 /* ---------- Monitor result panel ---------- */
 .monitor-panel {
     background:
-        radial-gradient(420px 220px at 85% -10%, rgba(166, 233, 210, 0.10), rgba(166, 233, 210, 0) 60%),
-        var(--teal-deep);
+        radial-gradient(420px 220px at 85% -10%, rgba(232, 176, 130, 0.14), rgba(232, 176, 130, 0) 60%),
+        var(--accent-deep);
     border-radius: 18px;
     padding: 1.9rem 2rem 1.7rem 2rem;
     margin-top: 0.7rem;
@@ -230,7 +230,7 @@ div[data-baseweb="input"] {
     font-size: 0.68rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #A6E9D2;
+    color: #E8B583;
     font-weight: 600;
     margin-bottom: 1rem;
     text-align: center;
@@ -250,7 +250,7 @@ div[data-baseweb="input"] {
 .gauge-caption {
     font-family: 'Inter', sans-serif;
     font-size: 0.78rem;
-    color: #9FBBB4;
+    color: #C8A88F;
     font-weight: 500;
     margin-top: 0.2rem;
     letter-spacing: 0.02em;
@@ -265,7 +265,7 @@ div[data-baseweb="input"] {
 .monitor-note {
     font-family: 'Inter', sans-serif;
     font-size: 0.82rem;
-    color: #8FA8A2;
+    color: #B99A83;
     font-weight: 500;
     text-align: center;
     margin-top: 0.3rem;
@@ -308,7 +308,7 @@ div[data-baseweb="input"] {
     padding: 0.2rem 0;
 }
 [data-testid="stExpander"] summary:hover {
-    color: var(--teal) !important;
+    color: var(--accent) !important;
 }
 
 /* Glossary grid */
@@ -321,7 +321,7 @@ div[data-baseweb="input"] {
 .glossary-card {
     background: var(--canvas);
     border: 1px solid var(--line);
-    border-left: 3px solid var(--teal);
+    border-left: 3px solid var(--accent);
     border-radius: 10px;
     padding: 0.7rem 0.85rem;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
@@ -341,7 +341,7 @@ div[data-baseweb="input"] {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.66rem;
     letter-spacing: 0.04em;
-    color: var(--teal);
+    color: var(--accent);
     font-weight: 600;
     text-transform: uppercase;
     display: inline-block;
@@ -356,12 +356,12 @@ div[data-baseweb="input"] {
 .glossary-target {
     margin-top: 0.85rem;
     padding: 0.85rem 1rem;
-    background: var(--teal-tint);
-    border: 1px solid var(--teal);
-    border-left: 3px solid var(--teal);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent);
+    border-left: 3px solid var(--accent);
     border-radius: 10px;
 }
-.glossary-target .glossary-term { color: var(--teal); }
+.glossary-target .glossary-term { color: var(--accent); }
 
 /* Mobile tightening */
 @media (max-width: 640px) {
@@ -526,10 +526,10 @@ if predict_clicked:
     probability = model.predict_proba(input_df)[0][1]
 
     if prediction == 1:
-        accent = "#E2542D"
+        accent = "#C1453B"
         verdict = "Elevated risk of a death event"
     else:
-        accent = "#43D9A3"
+        accent = "#8FA05F"
         verdict = "Lower risk of a death event"
 
     # Needle geometry for the semicircular risk gauge
@@ -545,9 +545,9 @@ if predict_clicked:
             <svg width="240" height="132" viewBox="0 0 240 140">
                 <defs>
                     <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="#1E9E74"/>
-                        <stop offset="50%" stop-color="#D9A441"/>
-                        <stop offset="100%" stop-color="#C2452B"/>
+                        <stop offset="0%" stop-color="#8FA05F"/>
+                        <stop offset="50%" stop-color="#E0A94B"/>
+                        <stop offset="100%" stop-color="#C1453B"/>
                     </linearGradient>
                 </defs>
                 <path d="M {cx - r_track},{cy} A {r_track},{r_track} 0 0 1 {cx + r_track},{cy}"
@@ -555,13 +555,13 @@ if predict_clicked:
                 <path d="M {cx - r_track},{cy} A {r_track},{r_track} 0 0 1 {cx + r_track},{cy}"
                       fill="none" stroke="url(#gaugeGrad)" stroke-width="13" stroke-linecap="round" opacity="0.92"/>
                 <line x1="{cx}" y1="{cy}" x2="{needle_x:.1f}" y2="{needle_y:.1f}"
-                      stroke="#F4FBF8" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="{cx}" cy="{cy}" r="7.5" fill="#F4FBF8"/>
+                      stroke="#FDF6EF" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="{cx}" cy="{cy}" r="7.5" fill="#FDF6EF"/>
             </svg>
             <div class="gauge-readout" style="color:{accent};">{probability:.1%}</div>
             <div class="gauge-caption">predicted probability</div>
         </div>
-        <div class="monitor-verdict" style="color:#E7F3EF;"><span class="pulse-icon">♥</span>{verdict}</div>
+        <div class="monitor-verdict" style="color:#F5E4D4;"><span class="pulse-icon">♥</span>{verdict}</div>
         <div class="monitor-note">Based on the {len(feature_names)} values entered above — not a diagnosis.</div>
     </div>
     """, unsafe_allow_html=True)
